@@ -47,7 +47,7 @@ struct RocketLaunchView: View {
     let store: StoreOf<RocketLaunch>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             NavigationStack {
                 VStack(spacing: 16) {
                     Image(viewStore.prepared ? "Rocket Flying" : "Rocket Idle")
@@ -61,7 +61,7 @@ struct RocketLaunchView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear { viewStore.send(.onAppear) }
             }
-        }
+        })
     }
 }
 

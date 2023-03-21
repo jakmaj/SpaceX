@@ -16,7 +16,7 @@ struct RocketDetailView: View {
     let store: StoreOf<RocketDetail>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             NavigationStack {
                 ScrollView(.vertical) {
                     VStack(alignment: .leading, spacing: 16) {
@@ -59,7 +59,7 @@ struct RocketDetailView: View {
                     }
                 }
             }
-        }
+        })
     }
 
     func parameterBox(title: String, value: Double, unit: String) -> some View {

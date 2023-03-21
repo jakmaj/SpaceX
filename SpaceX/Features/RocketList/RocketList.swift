@@ -35,7 +35,7 @@ struct RocketList: Reducer {
             return .none
 
         case let .downloadListResult(.failure(error)):
-            //TODO: handle error
+            // TODO: handle error
             print("RocketList - downloadListResult - error: \(error)")
             state.isActivityIndicatorVisible = false
             return .none
@@ -47,20 +47,20 @@ struct RocketListView: View {
     let store: StoreOf<RocketList>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             NavigationStack {
                 ZStack {
                     List {
                         ForEachStore(
                             store.scope(state: \.rockets, action: RocketList.Action.rowAction(id:action:))
                         ) { rowStore in
-                            WithViewStore(rowStore, observe: { $0 }) { rowViewStore in
+                            WithViewStore(rowStore, observe: { $0 }, content: { rowViewStore in
                                 NavigationLink {
                                     RocketDetailView(store: rowStore)
                                 } label: {
                                     RocketListCellView(rocket: rowViewStore.state)
                                 }
-                            }
+                            })
                         }
                     }
                     if viewStore.isActivityIndicatorVisible {
@@ -70,7 +70,7 @@ struct RocketListView: View {
                 .navigationTitle("Rockets")
                 .onAppear { viewStore.send(.onAppear) }
             }
-        }
+        })
     }
 }
 

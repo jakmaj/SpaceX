@@ -38,10 +38,21 @@ struct Rocket: Identifiable, Equatable, Decodable {
     }
 
     enum MassUnitCodingKeys: String, CodingKey {
-        case kg
+        case kilograms = "kg"
     }
 
-    init(id: String, name: String, description: String, height: Double, diameter: Double, mass: Double, firstFlight: Date, photos: [String], stageOne: Stage, stageTwo: Stage) {
+    init(
+        id: String,
+        name: String,
+        description: String,
+        height: Double,
+        diameter: Double,
+        mass: Double,
+        firstFlight: Date,
+        photos: [String],
+        stageOne: Stage,
+        stageTwo: Stage
+    ) {
         self.id = id
         self.name = name
         self.description = description
@@ -69,7 +80,7 @@ struct Rocket: Identifiable, Equatable, Decodable {
         let diameterContainer = try container.nestedContainer(keyedBy: LengthUnitCodingKeys.self, forKey: .diameter)
         diameter = try diameterContainer.decode(Double.self, forKey: .meters)
         let massContainer = try container.nestedContainer(keyedBy: MassUnitCodingKeys.self, forKey: .mass)
-        mass = try massContainer.decode(Double.self, forKey: .kg)
+        mass = try massContainer.decode(Double.self, forKey: .kilograms)
     }
 
     static var mocks: [Rocket] {
@@ -77,7 +88,11 @@ struct Rocket: Identifiable, Equatable, Decodable {
             Rocket(
                 id: "falcon1",
                 name: "Falcon 1",
-                description: "The Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel launch vehicle to go into orbit around the Earth.",
+                description: """
+                    The Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX
+                    during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel
+                    launch vehicle to go into orbit around the Earth.
+                """,
                 height: 22.25,
                 diameter: 1.68,
                 mass: 30146,
@@ -92,7 +107,10 @@ struct Rocket: Identifiable, Equatable, Decodable {
             Rocket(
                 id: "falcon9",
                 name: "Falcon 9",
-                description: "Falcon 9 is a two-stage rocket designed and manufactured by SpaceX for the reliable and safe transport of satellites and the Dragon spacecraft into orbit.",
+                description: """
+                    Falcon 9 is a two-stage rocket designed and manufactured by SpaceX for the reliable and safe
+                    transport of satellites and the Dragon spacecraft into orbit.
+                """,
                 height: 70,
                 diameter: 3.7,
                 mass: 549054,
