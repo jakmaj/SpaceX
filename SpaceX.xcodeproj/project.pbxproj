@@ -19,6 +19,8 @@
 		098ACE2B29C49917006E4638 /* String+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098ACE2A29C49917006E4638 /* String+Error.swift */; };
 		098ACE2D29C49C40006E4638 /* RocketDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098ACE2C29C49C40006E4638 /* RocketDetail.swift */; };
 		098ACE3029C4A09A006E4638 /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 098ACE2F29C4A09A006E4638 /* SwiftUINavigation */; };
+		099FABA729C9A40D0021BB8F /* RocketLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099FABA629C9A40D0021BB8F /* RocketLaunch.swift */; };
+		099FABAA29C9CD730021BB8F /* MotionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099FABA929C9CD730021BB8F /* MotionClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		098ACE2829C493D5006E4638 /* Date+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Convenience.swift"; sourceTree = "<group>"; };
 		098ACE2A29C49917006E4638 /* String+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Error.swift"; sourceTree = "<group>"; };
 		098ACE2C29C49C40006E4638 /* RocketDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketDetail.swift; sourceTree = "<group>"; };
+		099FABA629C9A40D0021BB8F /* RocketLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunch.swift; sourceTree = "<group>"; };
+		099FABA929C9CD730021BB8F /* MotionClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +95,7 @@
 				098ACE2629C493AD006E4638 /* Common */,
 				098ACE2129C4717E006E4638 /* Features */,
 				098ACE2029C47171006E4638 /* Networking */,
+				099FABA829C9CD5C0021BB8F /* Motion */,
 				098ACE1F29C47161006E4638 /* Model */,
 				098ACDF229C456FE006E4638 /* Assets.xcassets */,
 				098ACDF429C456FE006E4638 /* Preview Content */,
@@ -159,6 +164,7 @@
 		098ACE2429C471A7006E4638 /* RocketLaunch */ = {
 			isa = PBXGroup;
 			children = (
+				099FABA629C9A40D0021BB8F /* RocketLaunch.swift */,
 			);
 			path = RocketLaunch;
 			sourceTree = "<group>";
@@ -186,6 +192,14 @@
 				098ACE2A29C49917006E4638 /* String+Error.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		099FABA829C9CD5C0021BB8F /* Motion */ = {
+			isa = PBXGroup;
+			children = (
+				099FABA929C9CD730021BB8F /* MotionClient.swift */,
+			);
+			path = Motion;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,6 +310,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				099FABA729C9A40D0021BB8F /* RocketLaunch.swift in Sources */,
+				099FABAA29C9CD730021BB8F /* MotionClient.swift in Sources */,
 				098ACDF129C456FD006E4638 /* RocketList.swift in Sources */,
 				098ACE2D29C49C40006E4638 /* RocketDetail.swift in Sources */,
 				098ACE2B29C49917006E4638 /* String+Error.swift in Sources */,

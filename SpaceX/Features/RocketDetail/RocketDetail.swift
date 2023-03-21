@@ -46,6 +46,18 @@ struct RocketDetailView: View {
                 }
                 .navigationTitle(viewStore.name)
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    NavigationLink {
+                        RocketLaunchView(
+                            store: Store(
+                                initialState: RocketLaunch.State(),
+                                reducer: RocketLaunch()
+                            )
+                        )
+                    } label: {
+                        Text("Launch")
+                    }
+                }
             }
         }
     }
