@@ -8,8 +8,7 @@ struct RocketList: Reducer {
     }
 
     enum Action: Equatable {
-        case onAppear
-        case onDisappear
+        case downloadList
         case downloadListResult(TaskResult<IdentifiedArrayOf<Rocket>>)
         case rowAction(id: Rocket.ID, action: RocketDetail.Action)
     }
@@ -19,15 +18,11 @@ struct RocketList: Reducer {
 
     func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
         switch action {
-        case .onAppear:
+        case .downloadList:
             return .task {
                 let result = await TaskResult { try await apiClient.fetchRocketList() }
                 return .downloadListResult(result)
             }
-            .cancellable(id: DownloadListId.self)
-
-        case .onDisappear:
-            return .cancel(id: DownloadListId.self)
 
         case let .downloadListResult(.success(rockets)):
             state.rockets = rockets
@@ -68,7 +63,7 @@ struct RocketListView: View {
                     }
                 }
                 .navigationTitle("Rockets")
-                .onAppear { viewStore.send(.onAppear) }
+                .task { await viewStore.send(.downloadList).finish() }
             }
         })
     }

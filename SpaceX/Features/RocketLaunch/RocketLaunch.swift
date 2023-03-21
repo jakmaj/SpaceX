@@ -8,29 +8,23 @@ struct RocketLaunch: Reducer {
     }
 
     enum Action: Equatable {
-        case onAppear
-        case onDisappear
+        case checkMotion
         case rocketPrepared
         case rocketLaunched
     }
 
     @Dependency(\.motionClient) var motionClient
-    private enum MotionWatchId {}
 
     func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
         switch action {
-        case .onAppear:
+        case .checkMotion:
             state.prepared = false
             state.launched = false
             return .run { send in
-                try await motionClient.wasMovedUpPicked()
+                await motionClient.wasMovedUpPicked()
                 await send(.rocketPrepared)
                 await send(.rocketLaunched, animation: .easeInOut(duration: 1))
             }
-            .cancellable(id: MotionWatchId.self)
-
-        case .onDisappear:
-            return .cancel(id: MotionWatchId.self)
 
         case .rocketPrepared:
             state.prepared = true
@@ -58,7 +52,7 @@ struct RocketLaunchView: View {
             }
             .navigationTitle("Launch")
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear { viewStore.send(.onAppear) }
+            .task { await viewStore.send(.checkMotion).finish() }
         })
     }
 }

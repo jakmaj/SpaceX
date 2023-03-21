@@ -4,7 +4,7 @@ import Foundation
 import XCTestDynamicOverlay
 
 struct MotionClient {
-    var wasMovedUpPicked: @Sendable () async throws -> Void
+    var wasMovedUpPicked: @Sendable () async -> Void
 }
 
 extension DependencyValues {
@@ -19,17 +19,13 @@ extension MotionClient: DependencyKey {
         wasMovedUpPicked: {
             let motionManager = CMMotionManager()
             motionManager.accelerometerUpdateInterval = 1/60
+            motionManager.startAccelerometerUpdates()
 
-            await withCheckedContinuation { continuation in
-                motionManager.startAccelerometerUpdates(to: .main) { data, error in
-                    if let error {
-                        print("RocketList - wasMovedUpPicked - error: \(error)")
-                        return
-                    }
-
-                    if let accelerationZ = data?.acceleration.z, accelerationZ < -1.5 {
-                        continuation.resume()
-                    }
+            var resultFound = false
+            while !Task.isCancelled && !resultFound {
+                try? await Task.sleep(for: .milliseconds(50))
+                if let accelerationZ = motionManager.accelerometerData?.acceleration.z, accelerationZ < -1.5 {
+                    resultFound = true
                 }
             }
 
@@ -39,7 +35,7 @@ extension MotionClient: DependencyKey {
 
     static let previewValue = Self(
         wasMovedUpPicked: {
-            try await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(for: .seconds(2))
         }
     )
 
