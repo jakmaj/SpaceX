@@ -17,7 +17,8 @@ struct Rocket: Identifiable, Equatable, Decodable {
     var mass: Double
     var firstFlight: Date
     var photos: [String]
-    var stages: [Stage]
+    var stageOne: Stage
+    var stageTwo: Stage
 
     enum CodingKeys: String, CodingKey {
         case id = "rocketId"
@@ -40,7 +41,7 @@ struct Rocket: Identifiable, Equatable, Decodable {
         case kg
     }
 
-    init(id: String, name: String, description: String, height: Double, diameter: Double, mass: Double, firstFlight: Date, photos: [String], stages: [Stage]) {
+    init(id: String, name: String, description: String, height: Double, diameter: Double, mass: Double, firstFlight: Date, photos: [String], stageOne: Stage, stageTwo: Stage) {
         self.id = id
         self.name = name
         self.description = description
@@ -49,7 +50,8 @@ struct Rocket: Identifiable, Equatable, Decodable {
         self.mass = mass
         self.firstFlight = firstFlight
         self.photos = photos
-        self.stages = stages
+        self.stageOne = stageOne
+        self.stageTwo = stageTwo
     }
 
     init(from decoder: Decoder) throws {
@@ -59,6 +61,8 @@ struct Rocket: Identifiable, Equatable, Decodable {
         description = try container.decode(String.self, forKey: .description)
         firstFlight = try container.decode(Date.self, forKey: .firstFlight)
         photos = try container.decode([String].self, forKey: .photos)
+        stageOne = try container.decode(Stage.self, forKey: .firstStage)
+        stageTwo = try container.decode(Stage.self, forKey: .secondStage)
 
         let heightContainer = try container.nestedContainer(keyedBy: LengthUnitCodingKeys.self, forKey: .height)
         height = try heightContainer.decode(Double.self, forKey: .meters)
@@ -66,14 +70,6 @@ struct Rocket: Identifiable, Equatable, Decodable {
         diameter = try diameterContainer.decode(Double.self, forKey: .meters)
         let massContainer = try container.nestedContainer(keyedBy: MassUnitCodingKeys.self, forKey: .mass)
         mass = try massContainer.decode(Double.self, forKey: .kg)
-
-        stages = []
-        if let stage = try? container.decode(Stage.self, forKey: .firstStage) {
-            stages.append(stage)
-        }
-        if let stage = try? container.decode(Stage.self, forKey: .secondStage) {
-            stages.append(stage)
-        }
     }
 
     static var mocks: [Rocket] {
@@ -90,10 +86,8 @@ struct Rocket: Identifiable, Equatable, Decodable {
                     "https://imgur.com/DaCfMsj.jpg",
                     "https://imgur.com/azYafd8.jpg"
                 ],
-                stages: [
-                    Stage(reusable: false, engines: 1, fuelAmountTons: 44.3, burnTimeSec: 169),
-                    Stage(reusable: false, engines: 1, fuelAmountTons: 3.38, burnTimeSec: 378)
-                ]
+                stageOne: Stage(reusable: false, engines: 1, fuelAmountTons: 44.3, burnTimeSec: 169),
+                stageTwo: Stage(reusable: false, engines: 1, fuelAmountTons: 3.38, burnTimeSec: 378)
             ),
             Rocket(
                 id: "falcon9",
@@ -108,10 +102,8 @@ struct Rocket: Identifiable, Equatable, Decodable {
                     "https://farm4.staticflickr.com/3955/32915197674_eee74d81bb_b.jpg",
                     "https://farm1.staticflickr.com/293/32312415025_6841e30bf1_b.jpg"
                 ],
-                stages: [
-                    Stage(reusable: true, engines: 9, fuelAmountTons: 385, burnTimeSec: 162),
-                    Stage(reusable: false, engines: 1, fuelAmountTons: 90, burnTimeSec: 397)
-                ]
+                stageOne: Stage(reusable: true, engines: 9, fuelAmountTons: 385, burnTimeSec: 162),
+                stageTwo: Stage(reusable: false, engines: 1, fuelAmountTons: 90, burnTimeSec: 397)
             )
         ]
     }
