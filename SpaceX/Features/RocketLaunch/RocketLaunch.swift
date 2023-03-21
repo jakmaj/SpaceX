@@ -48,19 +48,17 @@ struct RocketLaunchView: View {
 
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
-            NavigationStack {
-                VStack(spacing: 16) {
-                    Image(viewStore.prepared ? "Rocket Flying" : "Rocket Idle")
-                        .offset(y: viewStore.launched ? -UIScreen.main.bounds.height : 0)
+            VStack(spacing: 16) {
+                Image(viewStore.prepared ? "Rocket Flying" : "Rocket Idle")
+                    .offset(y: viewStore.launched ? -UIScreen.main.bounds.height : 0)
 
-                    Text(viewStore.launched ? "Launch successfull!" : "Move your phone up to launch the rocket")
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: 200)
-                }
-                .navigationTitle("Launch")
-                .navigationBarTitleDisplayMode(.inline)
-                .onAppear { viewStore.send(.onAppear) }
+                Text(viewStore.launched ? "Launch successfull!" : "Move your phone up to launch the rocket")
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: 200)
             }
+            .navigationTitle("Launch")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear { viewStore.send(.onAppear) }
         })
     }
 }

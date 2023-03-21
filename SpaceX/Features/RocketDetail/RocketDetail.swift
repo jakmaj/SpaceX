@@ -17,46 +17,44 @@ struct RocketDetailView: View {
 
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
-            NavigationStack {
-                ScrollView(.vertical) {
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Overview")
-                            .font(.headline)
-                        Text(viewStore.description)
+            ScrollView(.vertical) {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Overview")
+                        .font(.headline)
+                    Text(viewStore.description)
 
-                        Text("Parameters")
-                            .font(.headline)
-                        HStack(spacing: 16) {
-                            parameterBox(title: "height", value: viewStore.height, unit: "m")
-                            parameterBox(title: "diameter", value: viewStore.diameter, unit: "m")
-                            parameterBox(title: "mass", value: viewStore.mass, unit: "t")
-                        }
-
-                        stageBox(title: "First Stage", stage: viewStore.stageOne)
-                        stageBox(title: "Second Stage", stage: viewStore.stageTwo)
-
-                        Text("Photos")
-                            .font(.headline)
-
-                        ForEach(viewStore.photos, id: \.self) { urlString in
-                            photo(url: URL(string: urlString))
-                        }
+                    Text("Parameters")
+                        .font(.headline)
+                    HStack(spacing: 16) {
+                        parameterBox(title: "height", value: viewStore.height, unit: "m")
+                        parameterBox(title: "diameter", value: viewStore.diameter, unit: "m")
+                        parameterBox(title: "mass", value: viewStore.mass, unit: "t")
                     }
-                    .padding()
+
+                    stageBox(title: "First Stage", stage: viewStore.stageOne)
+                    stageBox(title: "Second Stage", stage: viewStore.stageTwo)
+
+                    Text("Photos")
+                        .font(.headline)
+
+                    ForEach(viewStore.photos, id: \.self) { urlString in
+                        photo(url: URL(string: urlString))
+                    }
                 }
-                .navigationTitle(viewStore.name)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    NavigationLink {
-                        RocketLaunchView(
-                            store: Store(
-                                initialState: RocketLaunch.State(),
-                                reducer: RocketLaunch()
-                            )
+                .padding()
+            }
+            .navigationTitle(viewStore.name)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                NavigationLink {
+                    RocketLaunchView(
+                        store: Store(
+                            initialState: RocketLaunch.State(),
+                            reducer: RocketLaunch()
                         )
-                    } label: {
-                        Text("Launch")
-                    }
+                    )
+                } label: {
+                    Text("Launch")
                 }
             }
         })
