@@ -21,6 +21,7 @@
 		098ACE3029C4A09A006E4638 /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 098ACE2F29C4A09A006E4638 /* SwiftUINavigation */; };
 		099FABA729C9A40D0021BB8F /* RocketLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099FABA629C9A40D0021BB8F /* RocketLaunch.swift */; };
 		099FABAA29C9CD730021BB8F /* MotionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099FABA929C9CD730021BB8F /* MotionClient.swift */; };
+		099FABAD29CB04260021BB8F /* NavigationWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099FABAC29CB04260021BB8F /* NavigationWrappers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		098ACE2C29C49C40006E4638 /* RocketDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketDetail.swift; sourceTree = "<group>"; };
 		099FABA629C9A40D0021BB8F /* RocketLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunch.swift; sourceTree = "<group>"; };
 		099FABA929C9CD730021BB8F /* MotionClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionClient.swift; sourceTree = "<group>"; };
+		099FABAC29CB04260021BB8F /* NavigationWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationWrappers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				098ACE2729C493B8006E4638 /* Extensions */,
+				099FABAC29CB04260021BB8F /* NavigationWrappers.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				099FABA729C9A40D0021BB8F /* RocketLaunch.swift in Sources */,
+				099FABAD29CB04260021BB8F /* NavigationWrappers.swift in Sources */,
 				099FABAA29C9CD730021BB8F /* MotionClient.swift in Sources */,
 				098ACDF129C456FD006E4638 /* RocketList.swift in Sources */,
 				098ACE2D29C49C40006E4638 /* RocketDetail.swift in Sources */,
