@@ -1,5 +1,8 @@
 "rocket_list.title" = "Rakety";
 "rocket_list.first_flight %@" = "První let: %@";
+"rocket_list.error_alert.title" = "Chyba";
+"rocket_list.error_alert.message" = "Nepovedlo se stáhnout seznam raket...";
+"rocket_list.error_alert.retry" = "Zkusit znovu";
 
 "rocket_detail.overview" = "Přehled";
 "rocket_detail.parameters" = "Parametry";

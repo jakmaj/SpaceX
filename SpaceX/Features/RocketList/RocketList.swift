@@ -7,6 +7,7 @@ struct RocketList: Reducer {
         var isActivityIndicatorVisible = true
 
         var route: Route?
+        var alert: AlertState<AlertAction>?
     }
 
     enum Route: Equatable {
@@ -19,8 +20,14 @@ struct RocketList: Reducer {
 
         case showDetail(Rocket.ID)
         case showNavigation(Bool)
+        case alert(AlertAction)
 
         case detailAction(id: Rocket.ID, action: RocketDetail.Action)
+    }
+
+    enum AlertAction: Equatable {
+        case retry
+        case dismiss
     }
 
     @Dependency(\.apiClient) var apiClient
@@ -41,9 +48,8 @@ struct RocketList: Reducer {
                 return .none
 
             case let .downloadListResult(.failure(error)):
-                // TODO: handle error
                 print("RocketList - downloadListResult - error: \(error)")
-                state.isActivityIndicatorVisible = false
+                state.alert = AlertState.showError()
                 return .none
 
             case let .showDetail(rocketId):
@@ -58,6 +64,13 @@ struct RocketList: Reducer {
                 return .none
 
             case .detailAction:
+                return .none
+
+            case .alert(.retry):
+                return .send(.downloadList)
+
+            case .alert(.dismiss):
+                state.alert = nil
                 return .none
             }
         }
@@ -95,6 +108,7 @@ struct RocketListView: View {
             }
             .navigationTitle("rocket_list.title")
             .task { await viewStore.send(.downloadList).finish() }
+            .alert(store.scope(state: \.alert, action: RocketList.Action.alert), dismiss: .dismiss)
             .universalNavigationDestination(
                 isPresented: viewStore.binding(
                     get: { $0.route != nil },
@@ -147,6 +161,18 @@ struct RocketListCellView: View {
         }
         .padding(.vertical, 2)
         .contentShape(Rectangle())
+    }
+}
+
+extension AlertState where Action == RocketList.AlertAction {
+    static func showError() -> Self {
+        Self(
+            title: TextState("rocket_list.error_alert.title"),
+            message: TextState("rocket_list.error_alert.message"),
+            buttons: [
+                .default(TextState("rocket_list.error_alert.retry"), action: .send(.retry))
+            ]
+        )
     }
 }
 

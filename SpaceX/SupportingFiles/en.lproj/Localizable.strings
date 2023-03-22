@@ -1,5 +1,8 @@
 "rocket_list.title" = "Rockets";
 "rocket_list.first_flight %@" = "First flight: %@";
+"rocket_list.error_alert.title" = "Error";
+"rocket_list.error_alert.message" = "Something went wrong while downloading list of rockets...";
+"rocket_list.error_alert.retry" = "Retry";
 
 "rocket_detail.overview" = "Overview";
 "rocket_detail.parameters" = "Parameters";
