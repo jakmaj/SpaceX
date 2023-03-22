@@ -9,7 +9,7 @@ struct RocketList: Reducer {
 
     enum Action: Equatable {
         case downloadList
-        case downloadListResult(TaskResult<IdentifiedArrayOf<Rocket>>)
+        case downloadListResult(TaskResult<[Rocket]>)
         case rowAction(id: Rocket.ID, action: RocketDetail.Action)
     }
 
@@ -25,7 +25,7 @@ struct RocketList: Reducer {
             }
 
         case let .downloadListResult(.success(rockets)):
-            state.rockets = rockets
+            state.rockets = IdentifiedArray(uniqueElements: rockets)
             state.isActivityIndicatorVisible = false
             return .none
 

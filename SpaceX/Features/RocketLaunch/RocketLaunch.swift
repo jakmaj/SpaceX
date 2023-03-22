@@ -21,7 +21,7 @@ struct RocketLaunch: Reducer {
             state.prepared = false
             state.launched = false
             return .run { send in
-                await motionClient.wasMovedUpPicked()
+                await motionClient.wasMovedUp()
                 await send(.rocketPrepared)
                 await send(.rocketLaunched, animation: .easeInOut(duration: 1))
             }

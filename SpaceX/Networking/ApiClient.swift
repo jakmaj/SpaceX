@@ -3,7 +3,7 @@ import Foundation
 import XCTestDynamicOverlay
 
 struct ApiClient {
-    var fetchRocketList: @Sendable () async throws -> IdentifiedArrayOf<Rocket>
+    var fetchRocketList: @Sendable () async throws -> [Rocket]
 }
 
 extension DependencyValues {
@@ -27,13 +27,13 @@ extension ApiClient: DependencyKey {
             decoder.dateDecodingStrategy = .formatted(formatter)
             decoder.keyDecodingStrategy = .convertFromSnakeCase
 
-            return IdentifiedArray(uniqueElements: try decoder.decode([Rocket].self, from: data))
+            return try decoder.decode([Rocket].self, from: data)
         }
     )
 
     static let previewValue = Self(
         fetchRocketList: {
-            IdentifiedArray(uniqueElements: Rocket.mocks)
+            Rocket.mocks
         }
     )
 
