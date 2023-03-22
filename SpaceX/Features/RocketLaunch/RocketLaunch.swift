@@ -46,11 +46,11 @@ struct RocketLaunchView: View {
                 Image(viewStore.prepared ? "Rocket Flying" : "Rocket Idle")
                     .offset(y: viewStore.launched ? -UIScreen.main.bounds.height : 0)
 
-                Text(viewStore.launched ? "Launch successfull!" : "Move your phone up to launch the rocket")
+                Text(viewStore.launched ? "rocket_launch.success" : "rocket_launch.hint")
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: 200)
             }
-            .navigationTitle("Launch")
+            .navigationTitle("rocket_launch.title")
             .navigationBarTitleDisplayMode(.inline)
             .task { await viewStore.send(.checkMotion).finish() }
         })

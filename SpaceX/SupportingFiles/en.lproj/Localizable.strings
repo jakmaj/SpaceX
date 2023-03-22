@@ -1,0 +1,22 @@
+"rocket_list.title" = "Rockets";
+"rocket_list.first_flight %@" = "First flight: %@";
+
+"rocket_detail.overview" = "Overview";
+"rocket_detail.parameters" = "Parameters";
+"rocket_detail.height" = "height";
+"rocket_detail.diameter" = "diameter";
+"rocket_detail.mass" = "mass";
+"rocket_detail.first_stage" = "First Stage";
+"rocket_detail.second_stage" = "Second Stage";
+"rocket_detail.photos" = "Photos";
+"rocket_detail.launch" = "Launch";
+"rocket_detail.reusable" = "reusable";
+"rocket_detail.not_reusable" = "not reusable";
+"rocket_detail.engine" = "1 engine";
+"rocket_detail.engines %lld" = "%lld engines";
+"rocket_detail.tons_of_fuel %lld" = "%lld tons of fuel";
+"rocket_detail.seconds_burn_time %lld" = "%lld seconds burn time";
+
+"rocket_launch.title" = "Launch";
+"rocket_launch.success" = "Launch successfull!";
+"rocket_launch.hint" = "Move your phone up to launch the rocket";

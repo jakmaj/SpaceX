@@ -59,22 +59,22 @@ struct RocketDetailView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 16) {
-                Text("Overview")
+                Text("rocket_detail.overview")
                     .font(.headline)
                 Text(viewStore.rocket.description)
 
-                Text("Parameters")
+                Text("rocket_detail.parameters")
                     .font(.headline)
                 HStack(spacing: 16) {
-                    parameterBox(title: "height", value: viewStore.rocket.height, unit: "m")
-                    parameterBox(title: "diameter", value: viewStore.rocket.diameter, unit: "m")
-                    parameterBox(title: "mass", value: viewStore.rocket.mass, unit: "t")
+                    parameterBox(title: "rocket_detail.height", value: viewStore.rocket.height, unit: "m")
+                    parameterBox(title: "rocket_detail.diameter", value: viewStore.rocket.diameter, unit: "m")
+                    parameterBox(title: "rocket_detail.mass", value: viewStore.rocket.mass, unit: "t")
                 }
 
-                stageBox(title: "First Stage", stage: viewStore.rocket.stageOne)
-                stageBox(title: "Second Stage", stage: viewStore.rocket.stageTwo)
+                stageBox(title: "rocket_detail.first_stage", stage: viewStore.rocket.stageOne)
+                stageBox(title: "rocket_detail.second_stage", stage: viewStore.rocket.stageTwo)
 
-                Text("Photos")
+                Text("rocket_detail.photos")
                     .font(.headline)
 
                 ForEach(viewStore.rocket.photos, id: \.self) { urlString in
@@ -89,7 +89,7 @@ struct RocketDetailView: View {
             Button {
                 viewStore.send(.showLaunch)
             } label: {
-                Text("Launch")
+                Text("rocket_detail.launch")
             }
         }
         .universalNavigationDestination(
@@ -101,7 +101,7 @@ struct RocketDetailView: View {
         )
     }
 
-    func parameterBox(title: String, value: Double, unit: String) -> some View {
+    func parameterBox(title: LocalizedStringKey, value: Double, unit: String) -> some View {
         VStack {
             Text("\(Int(value))\(unit)")
                 .lineLimit(1)
@@ -117,27 +117,27 @@ struct RocketDetailView: View {
         .background(RoundedRectangle(cornerRadius: 16).foregroundColor(Color("ParameterBackground")))
     }
 
-    func stageBox(title: String, stage: Rocket.Stage) -> some View {
+    func stageBox(title: LocalizedStringKey, stage: Rocket.Stage) -> some View {
         VStack(alignment: .leading) {
             Text(title)
                 .font(.headline)
             HStack {
                 Image("Reusable")
-                Text(stage.reusable ? "reusable" : "not reusable")
+                Text(stage.reusable ? "rocket_detail.reusable" : "rocket_detail.not_reusable")
                 Spacer()
             }
             HStack {
                 Image("Engine")
-                Text(stage.engines == 1 ? "1 engine" : "\(stage.engines) engines")
+                Text(stage.engines == 1 ? "rocket_detail.engine" : "rocket_detail.engines \(stage.engines)")
             }
             HStack {
                 Image("Fuel")
-                Text("\(Int(stage.fuelAmountTons)) tons of fuel")
+                Text("rocket_detail.tons_of_fuel \(Int(stage.fuelAmountTons))")
             }
             if let burnTime = stage.burnTimeSec {
                 HStack {
                     Image("Burn")
-                    Text("\(Int(burnTime)) seconds burn time")
+                    Text("rocket_detail.seconds_burn_time \(Int(burnTime))")
                 }
             }
         }

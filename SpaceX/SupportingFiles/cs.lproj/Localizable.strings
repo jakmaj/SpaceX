@@ -1,0 +1,22 @@
+"rocket_list.title" = "Rakety";
+"rocket_list.first_flight %@" = "První let: %@";
+
+"rocket_detail.overview" = "Přehled";
+"rocket_detail.parameters" = "Parametry";
+"rocket_detail.height" = "výška";
+"rocket_detail.diameter" = "průměr";
+"rocket_detail.mass" = "hmotnost";
+"rocket_detail.first_stage" = "První stupeň";
+"rocket_detail.second_stage" = "Druhý stupeň";
+"rocket_detail.photos" = "Fotky";
+"rocket_detail.launch" = "Start";
+"rocket_detail.reusable" = "znovu použitelný";
+"rocket_detail.not_reusable" = "nelze znovu použít";
+"rocket_detail.engine" = "1 motor";
+"rocket_detail.engines %lld" = "%lld motorů";
+"rocket_detail.tons_of_fuel %lld" = "%lld tun paliva";
+"rocket_detail.seconds_burn_time %lld" = "%lld sekund zážehu";
+
+"rocket_launch.title" = "Start";
+"rocket_launch.success" = "Start úspěšný!";
+"rocket_launch.hint" = "Zvedni telefon pro odstartování rakety";

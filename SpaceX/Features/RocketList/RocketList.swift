@@ -93,7 +93,7 @@ struct RocketListView: View {
                     ProgressView()
                 }
             }
-            .navigationTitle("Rockets")
+            .navigationTitle("rocket_list.title")
             .task { await viewStore.send(.downloadList).finish() }
             .universalNavigationDestination(
                 isPresented: viewStore.binding(
@@ -136,7 +136,7 @@ struct RocketListCellView: View {
             VStack(alignment: .leading) {
                 Text(rocket.name)
                     .font(.headline)
-                Text("First flight: \(rocket.firstFlight.dateString)")
+                Text("rocket_list.first_flight \(rocket.firstFlight.dateString)")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
