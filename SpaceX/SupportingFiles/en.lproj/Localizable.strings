@@ -12,8 +12,6 @@
 "rocket_detail.launch" = "Launch";
 "rocket_detail.reusable" = "reusable";
 "rocket_detail.not_reusable" = "not reusable";
-"rocket_detail.engine" = "1 engine";
-"rocket_detail.engines %lld" = "%lld engines";
 "rocket_detail.tons_of_fuel %lld" = "%lld tons of fuel";
 "rocket_detail.seconds_burn_time %lld" = "%lld seconds burn time";
 

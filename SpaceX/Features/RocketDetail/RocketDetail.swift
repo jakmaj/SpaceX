@@ -128,7 +128,7 @@ struct RocketDetailView: View {
             }
             HStack {
                 Image("Engine")
-                Text(stage.engines == 1 ? "rocket_detail.engine" : "rocket_detail.engines \(stage.engines)")
+                Text("rocket_detail.engines \(stage.engines)")
             }
             HStack {
                 Image("Fuel")

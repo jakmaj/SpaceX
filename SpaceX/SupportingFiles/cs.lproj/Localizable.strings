@@ -12,8 +12,6 @@
 "rocket_detail.launch" = "Start";
 "rocket_detail.reusable" = "znovu použitelný";
 "rocket_detail.not_reusable" = "nelze znovu použít";
-"rocket_detail.engine" = "1 motor";
-"rocket_detail.engines %lld" = "%lld motorů";
 "rocket_detail.tons_of_fuel %lld" = "%lld tun paliva";
 "rocket_detail.seconds_burn_time %lld" = "%lld sekund zážehu";
 
