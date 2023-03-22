@@ -146,6 +146,7 @@ struct RocketListCellView: View {
                 .foregroundColor(.secondary)
         }
         .padding(.vertical, 2)
+        .contentShape(Rectangle())
     }
 }
 
