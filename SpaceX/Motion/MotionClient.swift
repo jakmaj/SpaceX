@@ -15,8 +15,9 @@ extension DependencyValues {
 }
 
 extension MotionClient: DependencyKey {
-    static let liveValue = Self(
-        wasMovedUp: {
+
+    init() {
+        wasMovedUp = {
             let motionManager = CMMotionManager()
             motionManager.accelerometerUpdateInterval = 1/60
             motionManager.startAccelerometerUpdates()
@@ -31,12 +32,12 @@ extension MotionClient: DependencyKey {
 
             motionManager.stopAccelerometerUpdates()
         }
-    )
+    }
+
+    static let liveValue = Self()
 
     static let previewValue = Self(
-        wasMovedUp: {
-            try? await Task.sleep(for: .seconds(2))
-        }
+        wasMovedUp: { try? await Task.sleep(for: .seconds(2)) }
     )
 
     static let testValue = Self(
