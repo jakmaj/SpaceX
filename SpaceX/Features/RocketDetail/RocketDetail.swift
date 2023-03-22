@@ -2,62 +2,103 @@ import ComposableArchitecture
 import SwiftUI
 
 struct RocketDetail: Reducer {
+    struct State: Identifiable, Equatable {
+        var rocket: Rocket
+        var launch: RocketLaunch.State
 
-    typealias State = Rocket
+        var route: Route?
 
-    enum Action: Equatable {
+        var id: Rocket.ID { rocket.id }
     }
 
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
+    enum Route: Equatable {
+        case launch
+    }
+
+    enum Action: Equatable {
+        case showLaunch
+        case showNavigation(Bool)
+
+        case launchAction(RocketLaunch.Action)
+    }
+
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .showLaunch:
+                state.route = .launch
+                return .none
+
+            case .showNavigation(false):
+                state.route = nil
+                return .none
+
+            case .showNavigation(true):
+                return .none
+
+            case .launchAction:
+                return .none
+            }
+        }
+
+        Scope(state: \.launch, action: /Action.launchAction) {
+            RocketLaunch()
+        }
     }
 }
 
 struct RocketDetailView: View {
     let store: StoreOf<RocketDetail>
+    @ObservedObject var viewStore: ViewStoreOf<RocketDetail>
+
+    init(store: StoreOf<RocketDetail>) {
+        self.store = store
+        viewStore = ViewStore(store, observe: { $0 })
+    }
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            ScrollView(.vertical) {
-                VStack(alignment: .leading, spacing: 16) {
-                    Text("Overview")
-                        .font(.headline)
-                    Text(viewStore.description)
+        ScrollView(.vertical) {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Overview")
+                    .font(.headline)
+                Text(viewStore.rocket.description)
 
-                    Text("Parameters")
-                        .font(.headline)
-                    HStack(spacing: 16) {
-                        parameterBox(title: "height", value: viewStore.height, unit: "m")
-                        parameterBox(title: "diameter", value: viewStore.diameter, unit: "m")
-                        parameterBox(title: "mass", value: viewStore.mass, unit: "t")
-                    }
-
-                    stageBox(title: "First Stage", stage: viewStore.stageOne)
-                    stageBox(title: "Second Stage", stage: viewStore.stageTwo)
-
-                    Text("Photos")
-                        .font(.headline)
-
-                    ForEach(viewStore.photos, id: \.self) { urlString in
-                        photo(url: URL(string: urlString))
-                    }
+                Text("Parameters")
+                    .font(.headline)
+                HStack(spacing: 16) {
+                    parameterBox(title: "height", value: viewStore.rocket.height, unit: "m")
+                    parameterBox(title: "diameter", value: viewStore.rocket.diameter, unit: "m")
+                    parameterBox(title: "mass", value: viewStore.rocket.mass, unit: "t")
                 }
-                .padding()
-            }
-            .navigationTitle(viewStore.name)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                NavigationLink {
-                    RocketLaunchView(
-                        store: Store(
-                            initialState: RocketLaunch.State(),
-                            reducer: RocketLaunch()
-                        )
-                    )
-                } label: {
-                    Text("Launch")
+
+                stageBox(title: "First Stage", stage: viewStore.rocket.stageOne)
+                stageBox(title: "Second Stage", stage: viewStore.rocket.stageTwo)
+
+                Text("Photos")
+                    .font(.headline)
+
+                ForEach(viewStore.rocket.photos, id: \.self) { urlString in
+                    photo(url: URL(string: urlString))
                 }
             }
-        })
+            .padding()
+        }
+        .navigationTitle(viewStore.rocket.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            Button {
+                viewStore.send(.showLaunch)
+            } label: {
+                Text("Launch")
+            }
+        }
+        .universalNavigationDestination(
+            isPresented: viewStore.binding(
+                get: { $0.route != nil },
+                send: RocketDetail.Action.showNavigation
+            ),
+            destination: { destination }
+        )
     }
 
     func parameterBox(title: String, value: Double, unit: String) -> some View {
@@ -114,13 +155,30 @@ struct RocketDetailView: View {
             ProgressView()
         }
     }
+
+    @ViewBuilder
+    var destination: some View {
+        switch viewStore.state.route {
+        case .launch:
+            RocketLaunchView(store: store.scope(
+                state: \.launch,
+                action: RocketDetail.Action.launchAction
+            ))
+
+        case .none:
+            EmptyView()
+        }
+    }
 }
 
 struct RocketDetailView_Previews: PreviewProvider {
     static var previews: some View {
         RocketDetailView(
             store: Store(
-                initialState: Rocket.mocks[1],
+                initialState: RocketDetail.State(
+                    rocket: Rocket.mocks[1],
+                    launch: RocketLaunch.State()
+                ),
                 reducer: RocketDetail()
             )
         )

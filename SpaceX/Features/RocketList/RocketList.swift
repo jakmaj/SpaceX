@@ -3,7 +3,7 @@ import SwiftUI
 
 struct RocketList: Reducer {
     struct State: Equatable {
-        var rockets: IdentifiedArrayOf<Rocket> = []
+        var rocketDetails: IdentifiedArrayOf<RocketDetail.State> = []
         var isActivityIndicatorVisible = true
 
         var route: Route?
@@ -25,35 +25,44 @@ struct RocketList: Reducer {
 
     @Dependency(\.apiClient) var apiClient
 
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-        switch action {
-        case .downloadList:
-            return .task {
-                let result = await TaskResult { try await apiClient.fetchRocketList() }
-                return .downloadListResult(result)
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .downloadList:
+                return .task {
+                    let result = await TaskResult { try await apiClient.fetchRocketList() }
+                    return .downloadListResult(result)
+                }
+
+            case let .downloadListResult(.success(rockets)):
+                let rocketStates = rockets.map { RocketDetail.State(rocket: $0, launch: RocketLaunch.State()) }
+                state.rocketDetails = IdentifiedArray(uniqueElements: rocketStates)
+                state.isActivityIndicatorVisible = false
+                return .none
+
+            case let .downloadListResult(.failure(error)):
+                // TODO: handle error
+                print("RocketList - downloadListResult - error: \(error)")
+                state.isActivityIndicatorVisible = false
+                return .none
+
+            case let .showDetail(rocketId):
+                state.route = .detail(rocketId)
+                return .none
+
+            case .showNavigation(false):
+                state.route = nil
+                return .none
+
+            case .showNavigation(true):
+                return .none
+
+            case .detailAction:
+                return .none
             }
-
-        case let .downloadListResult(.success(rockets)):
-            state.rockets = IdentifiedArray(uniqueElements: rockets)
-            state.isActivityIndicatorVisible = false
-            return .none
-
-        case let .downloadListResult(.failure(error)):
-            // TODO: handle error
-            print("RocketList - downloadListResult - error: \(error)")
-            state.isActivityIndicatorVisible = false
-            return .none
-
-        case let .showDetail(rocketId):
-            state.route = .detail(rocketId)
-            return .none
-
-        case .showNavigation(false):
-            state.route = nil
-            return .none
-
-        case .showNavigation(true):
-            return .none
+        }
+        .forEach(\.rocketDetails, action: /Action.detailAction(id:action:)) {
+            RocketDetail()
         }
     }
 }
@@ -71,11 +80,11 @@ struct RocketListView: View {
         NavigationStack {
             ZStack {
                 List {
-                    ForEach(viewStore.rockets, id: \.id) { rocket in
+                    ForEach(viewStore.rocketDetails, id: \.id) { rocketDetail in
                         Button {
-                            viewStore.send(.showDetail(rocket.id))
+                            viewStore.send(.showDetail(rocketDetail.id))
                         } label: {
-                            RocketListCellView(rocket: rocket)
+                            RocketListCellView(rocket: rocketDetail.rocket)
                         }
                         .buttonStyle(.plain)
                     }
@@ -103,7 +112,7 @@ struct RocketListView: View {
             IfLetStore(
                 store.scope(
                     state: {
-                        $0.rockets[id: rocketId]
+                        $0.rocketDetails[id: rocketId]
                     },
                     action: {
                         .detailAction(id: rocketId, action: $0)
