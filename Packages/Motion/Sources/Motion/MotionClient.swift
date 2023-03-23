@@ -3,11 +3,11 @@ import CoreMotion
 import Foundation
 import XCTestDynamicOverlay
 
-struct MotionClient {
-    var wasMovedUp: @Sendable () async -> Void
+public struct MotionClient {
+    public var wasMovedUp: @Sendable () async -> Void
 }
 
-extension DependencyValues {
+public extension DependencyValues {
     var motionClient: MotionClient {
         get { self[MotionClient.self] }
         set { self[MotionClient.self] = newValue }
@@ -16,7 +16,7 @@ extension DependencyValues {
 
 extension MotionClient: DependencyKey {
 
-    init() {
+    public init() {
         wasMovedUp = {
             let motionManager = CMMotionManager()
             motionManager.accelerometerUpdateInterval = 1/60
@@ -34,13 +34,13 @@ extension MotionClient: DependencyKey {
         }
     }
 
-    static let liveValue = Self()
+    public static let liveValue = Self()
 
-    static let previewValue = Self(
+    public static let previewValue = Self(
         wasMovedUp: { try? await Task.sleep(for: .seconds(2)) }
     )
 
-    static let testValue = Self(
+    public static let testValue = Self(
         wasMovedUp: unimplemented("\(Self.self).wasPicked")
     )
 }

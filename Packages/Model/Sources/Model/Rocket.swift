@@ -1,47 +1,26 @@
 import Foundation
 
-struct Rocket: Identifiable, Equatable, Decodable {
+public struct Rocket: Identifiable, Equatable {
 
-    struct Stage: Equatable, Codable {
-        var reusable: Bool
-        var engines: Int
-        var fuelAmountTons: Double
-        var burnTimeSec: Double?
+    public struct Stage: Equatable, Codable {
+        public var reusable: Bool
+        public var engines: Int
+        public var fuelAmountTons: Double
+        public var burnTimeSec: Double?
     }
 
-    var id: String
-    var name: String
-    var description: String
-    var height: Double
-    var diameter: Double
-    var mass: Double
-    var firstFlight: Date
-    var photos: [String]
-    var stageOne: Stage
-    var stageTwo: Stage
+    public var id: String
+    public var name: String
+    public var description: String
+    public var height: Double
+    public var diameter: Double
+    public var mass: Double
+    public var firstFlight: Date
+    public var photos: [String]
+    public var stageOne: Stage
+    public var stageTwo: Stage
 
-    enum CodingKeys: String, CodingKey {
-        case id = "rocketId"
-        case name = "rocketName"
-        case description
-        case height
-        case diameter
-        case mass
-        case firstFlight
-        case photos = "flickrImages"
-        case firstStage
-        case secondStage
-    }
-
-    enum LengthUnitCodingKeys: String, CodingKey {
-        case meters
-    }
-
-    enum MassUnitCodingKeys: String, CodingKey {
-        case kilograms = "kg"
-    }
-
-    init(
+    public init(
         id: String,
         name: String,
         description: String,
@@ -65,25 +44,7 @@ struct Rocket: Identifiable, Equatable, Decodable {
         self.stageTwo = stageTwo
     }
 
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(String.self, forKey: .id)
-        name = try container.decode(String.self, forKey: .name)
-        description = try container.decode(String.self, forKey: .description)
-        firstFlight = try container.decode(Date.self, forKey: .firstFlight)
-        photos = try container.decode([String].self, forKey: .photos)
-        stageOne = try container.decode(Stage.self, forKey: .firstStage)
-        stageTwo = try container.decode(Stage.self, forKey: .secondStage)
-
-        let heightContainer = try container.nestedContainer(keyedBy: LengthUnitCodingKeys.self, forKey: .height)
-        height = try heightContainer.decode(Double.self, forKey: .meters)
-        let diameterContainer = try container.nestedContainer(keyedBy: LengthUnitCodingKeys.self, forKey: .diameter)
-        diameter = try diameterContainer.decode(Double.self, forKey: .meters)
-        let massContainer = try container.nestedContainer(keyedBy: MassUnitCodingKeys.self, forKey: .mass)
-        mass = try massContainer.decode(Double.self, forKey: .kilograms)
-    }
-
-    static var mocks: [Rocket] {
+    public static var mocks: [Rocket] {
         [
             Rocket(
                 id: "falcon1",

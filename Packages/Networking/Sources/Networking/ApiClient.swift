@@ -1,12 +1,14 @@
+import Common
 import ComposableArchitecture
 import Foundation
+import Model
 import XCTestDynamicOverlay
 
-struct ApiClient {
-    var fetchRocketList: @Sendable () async throws -> [Rocket]
+public struct ApiClient {
+    public var fetchRocketList: @Sendable () async throws -> [Rocket]
 }
 
-extension DependencyValues {
+public extension DependencyValues {
     var apiClient: ApiClient {
         get { self[ApiClient.self] }
         set { self[ApiClient.self] = newValue }
@@ -15,7 +17,7 @@ extension DependencyValues {
 
 extension ApiClient: DependencyKey {
 
-    init(baseURL: String) {
+    public init(baseURL: String) {
         fetchRocketList = {
             guard let url = URL(string: "\(baseURL)/rockets") else {
                 throw "Invalid endpoint URL"
@@ -32,13 +34,13 @@ extension ApiClient: DependencyKey {
         }
     }
 
-    static let liveValue = Self(baseURL: "https://api.spacexdata.com/v3")
+    public static let liveValue = Self(baseURL: "https://api.spacexdata.com/v3")
 
-    static let previewValue = Self(
+    public static let previewValue = Self(
         fetchRocketList: { Rocket.mocks }
     )
 
-    static let testValue = Self(
+    public static let testValue = Self(
         fetchRocketList: unimplemented("\(Self.self).fetchRocketList")
     )
 }
